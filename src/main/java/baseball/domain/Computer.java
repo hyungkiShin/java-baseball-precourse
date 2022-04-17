@@ -19,10 +19,6 @@ public class Computer {
         return ballCnt;
     }
 
-    public Integer[] getRandomNumbers() {
-        return randomNumbers;
-    }
-
     public Integer[] getBotNumber() {
         return randomNumbers;
     }

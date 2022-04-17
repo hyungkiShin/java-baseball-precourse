@@ -60,24 +60,26 @@ public class BaseballService {
 
     public void billboardResults(int[] userInputItems, Integer[] randomBot) {
         for (int i = 0; i < 3; i++) {
-            if(userInputItems[i] == randomBot[i]) {
-                strikeCounter();
-                break;
-            }
-            ballCounter(userInputItems, randomBot[i]);
+            commonBillboard(userInputItems, randomBot, i);
         }
     }
 
-    void strikeCounter() {
+    public void commonBillboard(int [] userInputItems, Integer [] randomBot, int i) {
+        if(userInputItems[i] == randomBot[i])
+            strikeCounter();
+        if (userInputItems[i] != randomBot[i])
+            ballCounter(userInputItems, randomBot[i]);
+    }
+
+    public void strikeCounter() {
         computer.strikeCountInc();
     }
 
-    void ballCounter(int[] userInputItems, int botNumber) {
+    public void ballCounter(int[] userInputItems, int botNumber) {
         for (int i = 0; i < userInputItems.length; i++) {
             if (botNumber == userInputItems[i]) {
                 computer.ballCountInc();
             }
         }
     }
-
 }
