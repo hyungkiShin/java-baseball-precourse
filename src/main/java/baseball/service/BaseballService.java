@@ -20,7 +20,6 @@ public class BaseballService {
             GameMessage.gameCountReturn(computer.getStrikeCount(), computer.getBallCount());
             strike = computer.getStrikeCount();
         }
-        GameMessage.gameOverMessage();
     }
 
     public void settingGame() {
@@ -33,10 +32,10 @@ public class BaseballService {
         billboardResults(user.getUserNumbers(), computer.getBotNumber());
     }
 
-    public int [] userInput(int SIZE) throws IllegalArgumentException {
+    public int [] userInput(int size) throws IllegalArgumentException {
         GameMessage.gameStartMessage();
         String userInput = Console.readLine();
-        return Parse.userInputParser(userInput, SIZE);
+        return Parse.userInputParser(userInput, size);
     }
 
     public static Integer[] randomItem() {
@@ -45,7 +44,6 @@ public class BaseballService {
         while(randomNumbers.size() < 3){
             randomNumbers.add(Randoms.pickNumberInRange(1, 9));
         }
-        System.out.println("randomNumbers = " + randomNumbers);
         return randomNumbers.toArray(new Integer[0]);
     }
 
