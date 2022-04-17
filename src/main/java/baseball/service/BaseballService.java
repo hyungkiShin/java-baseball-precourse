@@ -2,7 +2,9 @@ package baseball.service;
 
 import baseball.domain.Computer;
 import baseball.domain.User;
-import baseball.view.GameResult;
+import baseball.util.Util;
+import baseball.view.GameMessage;
+import camp.nextstep.edu.missionutils.Console;
 import camp.nextstep.edu.missionutils.Randoms;
 
 import java.util.HashSet;
@@ -15,9 +17,9 @@ public class BaseballService {
         while(computer.getStrikeCount() != 3) {
             notStrike();
             billboardResults(user.getUserNumbers(), computer.getBotNumber());
-            GameResult.gameCountReturn(computer.getStrikeCount(), computer.getBallCount());
+            GameMessage.gameCountReturn(computer.getStrikeCount(), computer.getBallCount());
         }
-        System.out.println("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
+        GameMessage.gameOverMessage();
     }
 
     public void settingGame() {
@@ -26,8 +28,25 @@ public class BaseballService {
 
     public void notStrike() {
         computer.resetGame();
-        user.setUserNumbers(user.userInput(3));
-        System.out.println("test = " + user.getUserNumbers().toString());
+        user.setUserNumbers(userInput(3));
+    }
+
+    public int [] userInput(int SIZE) throws IllegalArgumentException {
+        GameMessage.gameStartMessage();
+        String userInput = Console.readLine();
+        return userInputParser(userInput, SIZE);
+    }
+
+    static int[] userInputParser(String input, int size) throws IllegalArgumentException {
+        int[] parseInt = new int[size];
+
+        for (int i = 0; i < input.length(); i++) {
+            if (!(Util.validateInput(input, i))) {
+                throw new IllegalArgumentException();
+            }
+            parseInt[i] = Util.convertStringToInt(input, i);
+        }
+        return parseInt;
     }
 
     public static Integer[] randomItem() {
@@ -60,7 +79,5 @@ public class BaseballService {
             }
         }
     }
-
-
 
 }
