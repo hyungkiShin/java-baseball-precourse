@@ -8,13 +8,21 @@ public class BaseballController {
 
     BaseballService service = new BaseballService();
 
-    public void play() {
-        service.settingGame();
-        service.startGame();
+    public void play() throws IllegalArgumentException {
+        settingGame();
+        startGame();
         reGameJudgment();
     }
 
-    public void reGameJudgment() {
+    public void settingGame() {
+        service.settingGame();
+    }
+
+    public void startGame() {
+        service.startGame();
+    }
+
+    public void reGameJudgment() throws IllegalArgumentException {
         GameMessage.currentGameMessage();
         String userInput = Console.readLine();
         if(userInput.equals("1")) {

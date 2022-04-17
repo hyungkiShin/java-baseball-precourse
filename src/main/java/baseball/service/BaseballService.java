@@ -2,7 +2,7 @@ package baseball.service;
 
 import baseball.domain.Computer;
 import baseball.domain.User;
-import baseball.util.Util;
+import baseball.util.Parse;
 import baseball.view.GameMessage;
 import camp.nextstep.edu.missionutils.Console;
 import camp.nextstep.edu.missionutils.Randoms;
@@ -14,10 +14,11 @@ public class BaseballService {
     User user = new User();
 
     public void startGame() throws IllegalArgumentException {
-        while(computer.getStrikeCount() != 3) {
-            notStrike();
-            billboardResults(user.getUserNumbers(), computer.getBotNumber());
+        int strike = 0;
+        while(strike != 3) {
+            play();
             GameMessage.gameCountReturn(computer.getStrikeCount(), computer.getBallCount());
+            strike = computer.getStrikeCount();
         }
         GameMessage.gameOverMessage();
     }
@@ -26,27 +27,16 @@ public class BaseballService {
         computer.setRandomNumbers(randomItem());
     }
 
-    public void notStrike() {
+    public void play() {
         computer.resetGame();
         user.setUserNumbers(userInput(3));
+        billboardResults(user.getUserNumbers(), computer.getBotNumber());
     }
 
     public int [] userInput(int SIZE) throws IllegalArgumentException {
         GameMessage.gameStartMessage();
         String userInput = Console.readLine();
-        return userInputParser(userInput, SIZE);
-    }
-
-    static int[] userInputParser(String input, int size) throws IllegalArgumentException {
-        int[] parseInt = new int[size];
-
-        for (int i = 0; i < input.length(); i++) {
-            if (!(Util.validateInput(input, i))) {
-                throw new IllegalArgumentException();
-            }
-            parseInt[i] = Util.convertStringToInt(input, i);
-        }
-        return parseInt;
+        return Parse.userInputParser(userInput, SIZE);
     }
 
     public static Integer[] randomItem() {
@@ -55,16 +45,17 @@ public class BaseballService {
         while(randomNumbers.size() < 3){
             randomNumbers.add(Randoms.pickNumberInRange(1, 9));
         }
+        System.out.println("randomNumbers = " + randomNumbers);
         return randomNumbers.toArray(new Integer[0]);
     }
 
     public void billboardResults(int[] userInputItems, Integer[] randomBot) {
-        for (int i = 0; i < 3; i++) {
-            commonBillboard(userInputItems, randomBot, i);
+        for (int i = 0; i < userInputItems.length; i++) {
+            countBillboard(userInputItems, randomBot, i);
         }
     }
 
-    public void commonBillboard(int [] userInputItems, Integer [] randomBot, int i) {
+    public void countBillboard(int [] userInputItems, Integer [] randomBot, int i) {
         if(userInputItems[i] == randomBot[i])
             strikeCounter();
         if (userInputItems[i] != randomBot[i])
